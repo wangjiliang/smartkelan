@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" type="text/css" href="./css/video-js.min.css"/>
+	<style type="text/css">
+		#title{
+			width: 100%;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			color: #FFFFFF;
+			font-size: 18px;
+			background-color: #2C81E7;
+		}
+		#myvideo{
+			width: 100%;
+		}
+		.video-js .vjs-big-play-button{
+			left:50%;
+			top:50%;
+			transform: translate(-50%,-50%);
+		}
+		.channel-list{
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		.channel-list div{
+			text-align: center;
+			font-size:14px;
+			padding:2px 10px;
+			margin:5px 10px;
+			background:lightgray;
+			color:#000;
+			border-radius: 14px;
+			cursor: pointer;
+		}
+		.channel-list div.active{
+			background:#2F85FC;
+			color:#fff;
+		}
+	</style>
+	<title>CCTV1</title>
+</head>
+<body style="margin: 0;background-color: #F2F6F8;">
+	<div class="container">
+		<div id="title">CCTV1</div>
+		<video id='myvideo' class="video-js vjs-default-skin" preload controls autoplay>
+			<source src="http://ivi.bupt.edu.cn/hls/cctv1.m3u8"></source>
+        </video>
+		<div class="channel-list">
+            <div class="active">CCTV1</div>
+            <div>CCTV3</div>
+			<div>CCTV5+</div>
+			<div>CCTV6</div>
+            <div>CCTV7</div>
+            <div>CCTV8</div>
+			<div>CCTV10</div>
+            <div>CCTV12</div>
+            <div>CCTV13</div>
+        </div>
+	</div>
+	<script src="./js/video.min.js"></script> 
+	<script src="./js/jquery-1.8.3.min.js"></script>
+	
+	<script>
+		var _height = screen.width * 9 / 16;
+		$("#myvideo").css("height", _height+'px')
+		$(function () {
+			var dataList = [
+                {name:"CCTV1",src:'http://ivi.bupt.edu.cn/hls/cctv1.m3u8'},
+                {name:"CCTV3",src:'http://ivi.bupt.edu.cn/hls/cctv3.m3u8'},
+				{name:"CCTV5+",src:'http://ivi.bupt.edu.cn/hls/cctv5phd.m3u8'},
+				{name:"CCTV6",src:'http://ivi.bupt.edu.cn/hls/cctv6.m3u8'},
+                {name:"CCTV7",src:'http://ivi.bupt.edu.cn/hls/cctv7.m3u8'},
+                {name:"CCTV8",src:'http://ivi.bupt.edu.cn/hls/cctv8.m3u8'},
+				{name:"CCTV10",src:'http://ivi.bupt.edu.cn/hls/cctv10.m3u8'},
+                {name:"CCTV12",src:'http://ivi.bupt.edu.cn/hls/cctv12.m3u8'},
+                {name:"CCTV13",src:'http://ivi.bupt.edu.cn/hls/cctv13.m3u8'}
+            ]
+            var player = videojs('myvideo', {
+                // playbackRates: [0.5, 1, 1.5, 2] //播放倍率
+            }, function () {
+                console.log('videojs播放器初始化成功')
+            })
+            player.play();    
+            $(".channel-list").on('click', "div", function () {
+				$(this).addClass('active').siblings().removeClass('active')
+                var channelId = $(this).index();
+				$("#title").text(dataList[channelId].name);
+                var player = videojs('myvideo');
+                player.src(dataList[channelId].src);
+                player.load();
+                player.play();
+            })
+        })
+    </script>
+</body>
+</html>
